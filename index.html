@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amirhossein Ebrahimi — Portfolio</title>
+<style>
+  :root{
+    --bg: #0b0912;
+    --bg2: #100e1a;
+    --primary: 190 100% 50%;
+    --primary-solid: #00d4ff;
+    --fg: #eef2f6;
+    --muted: #8b93a7;
+    --border: rgba(255,255,255,.08);
+    --glass: rgba(255,255,255,.03);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background: radial-gradient(1200px 600px at 15% -10%, rgba(0,212,255,.10), transparent 60%),
+                radial-gradient(1200px 700px at 90% 110%, rgba(0,212,255,.08), transparent 60%),
+                var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    overflow-x:hidden;
+    cursor:none;
+  }
+  a{color:inherit; text-decoration:none;}
+  ::selection{ background: rgba(0,212,255,.3); }
+  a, button, input, textarea, select, label, .btn, .icon-btn, .card, .badge-tech, [onclick]{ cursor:none; }
+
+  /* ---------- Custom cursor ---------- */
+  #cursor-dot, #cursor-ring{
+    position:fixed; top:0; left:0; pointer-events:none; z-index:9999;
+    border-radius:50%;
+    transform: translate(-50%,-50%);
+    will-change: transform;
+  }
+  #cursor-dot{
+    width:8px; height:8px; background: var(--primary-solid);
+    box-shadow: 0 0 12px rgba(0,212,255,.9);
+    transition: width .15s, height .15s, background .15s;
+  }
+  #cursor-ring{
+    width:34px; height:34px;
+    border: 1.5px solid rgba(0,212,255,.55);
+    transition: width .18s ease, height .18s ease, border-color .18s ease, background .18s ease;
+  }
+  body.cursor-hover #cursor-ring{
+    width:56px; height:56px;
+    background: rgba(0,212,255,.08);
+    border-color: rgba(0,212,255,.9);
+  }
+  body.cursor-hover #cursor-dot{ width:4px; height:4px; }
+  @media (max-width: 820px){
+    #cursor-dot, #cursor-ring{ display:none; }
+    body, a, button, input, textarea, select, label, .btn, .icon-btn, .card, .badge-tech, [onclick]{ cursor:auto; }
+  }
+
+  /* ---------- Animated background canvas ---------- */
+  #bg-canvas{
+    position:fixed; inset:0; width:100%; height:100%;
+    z-index:0; pointer-events:none;
+  }
+
+  /* ---------- Layout helpers ---------- */
+  .wrap{ max-width:1100px; margin:0 auto; padding:0 24px; position:relative; z-index:2; }
+  .section{ padding: 96px 0; }
+  .section-head{ text-align:center; margin-bottom:56px; }
+  .section-head .icon-badge{
+    width:52px; height:52px; margin:0 auto 16px; border-radius:16px;
+    background: rgba(0,212,255,.08); border:1px solid rgba(0,212,255,.2);
+    display:flex; align-items:center; justify-content:center; color: var(--primary-solid);
+    box-shadow: 0 0 30px rgba(0,212,255,.12);
+  }
+  .section-head h2{ font-size: clamp(28px,4vw,40px); font-weight:700; margin:0 0 10px; }
+  .section-head p{ color: var(--muted); font-size:17px; max-width:560px; margin:0 auto; }
+  .divider{ width:60px; height:3px; margin:18px auto 0; border-radius:3px;
+    background: linear-gradient(90deg, transparent, var(--primary-solid), transparent); }
+
+  /* ---------- Nav ---------- */
+  nav{ position:fixed; top:0; left:0; right:0; z-index:100; backdrop-filter: blur(10px);
+    background: rgba(11,9,18,.55); border-bottom: 1px solid transparent; transition: border-color .3s, background .3s; }
+  nav.scrolled{ border-color: var(--border); }
+  .nav-inner{ max-width:1100px; margin:0 auto; padding:0 24px; height:64px; display:flex; align-items:center; justify-content:space-between; }
+  .brand{ display:flex; align-items:center; gap:10px; font-weight:600; font-size:15px; }
+  .brand .logo{ width:32px; height:32px; border-radius:9px; background: rgba(0,212,255,.1); border:1px solid rgba(0,212,255,.25);
+    display:flex; align-items:center; justify-content:center; color:var(--primary-solid); font-weight:700; font-size:13px; }
+  .nav-links{ display:flex; gap:28px; }
+  .nav-links a{ font-size:14px; color:var(--muted); transition: color .2s; }
+  .nav-links a:hover{ color:var(--fg); }
+  .nav-icons{ display:flex; gap:6px; }
+  .icon-btn{ width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--muted);
+    background:none; border:none; padding:0; font:inherit; cursor:none;
+    transition: color .2s, background .2s; }
+  .icon-btn:hover{ color: var(--primary-solid); background: rgba(0,212,255,.08); }
+  @media (max-width: 780px){ .nav-links{ display:none; } }
+  .nav-toggle{ display:none; }
+  .nav-mobile-links{
+    display:none;
+    flex-direction:column;
+    gap:2px;
+    padding: 8px 24px 18px;
+    background: rgba(11,9,18,.92);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-mobile-links a{
+    padding:12px 4px; font-size:15px; color:var(--muted); border-bottom:1px solid rgba(255,255,255,.06);
+    transition: color .2s;
+  }
+  .nav-mobile-links a:hover{ color:var(--fg); }
+  .nav-mobile-links a:last-child{ border-bottom:none; }
+  nav.nav-open .nav-mobile-links{ display:flex; }
+  @media (max-width: 780px){
+    .nav-toggle{ display:flex; }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{ min-height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; padding-top:80px; }
+  .badge-pill{ display:inline-flex; align-items:center; gap:8px; padding:7px 16px; border-radius:999px;
+    background: rgba(0,212,255,.1); border:1px solid rgba(0,212,255,.2); font-size:13px; color: var(--primary-solid); margin-bottom:32px; }
+  .badge-pill .dot{ width:8px; height:8px; border-radius:50%; background: var(--primary-solid); animation: pulse 2s infinite; }
+  @keyframes pulse{ 50%{ opacity:.4; } }
+  .hero h1{ font-size: clamp(42px, 8vw, 84px); font-weight:800; line-height:1.05; margin:0 0 16px; }
+  .gradient-text{ background: linear-gradient(90deg, var(--primary-solid), #7dd8ff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .hero .tag{ font-size: clamp(17px,2vw,21px); color: var(--muted); height:36px; margin-bottom:32px; }
+  .hero .tag .blink{ color:var(--primary-solid); animation: pulse 1.2s infinite; }
+  .hero p.desc{ color: var(--muted); max-width:620px; margin:0 auto 40px; line-height:1.7; font-size:16px; }
+  .hero p.desc b{ color: rgba(0,212,255,.85); font-weight:500; }
+  .btn-row{ display:flex; flex-wrap:wrap; gap:16px; justify-content:center; margin-bottom:64px; }
+  .btn{ display:inline-flex; align-items:center; gap:8px; padding:12px 26px; border-radius:999px; font-size:14px; font-weight:500;
+    border:1px solid transparent; transition: transform .25s, box-shadow .25s, border-color .25s, background .25s; }
+  .btn-primary{ background: var(--primary-solid); color:#031018; }
+  .btn-primary:hover{ box-shadow: 0 0 34px rgba(0,212,255,.4); transform: translateY(-2px); }
+  .btn-outline{ border-color: rgba(255,255,255,.15); }
+  .btn-outline:hover{ border-color: rgba(0,212,255,.4); background: rgba(0,212,255,.06); transform: translateY(-2px); }
+  .stat-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; max-width:620px; margin:0 auto; }
+  .stat-num{ font-size: clamp(24px,3vw,32px); font-weight:700; color: var(--primary-solid); text-shadow: 0 0 16px rgba(0,212,255,.4); }
+  .stat-label{ font-size:12px; color: var(--muted); margin-top:4px; }
+  .scroll-cue{ margin-top:56px; color: rgba(255,255,255,.3); animation: bob 2s infinite ease-in-out; }
+  @keyframes bob{ 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(8px);} }
+  @media (max-width: 620px){ .stat-grid{ grid-template-columns:repeat(2,1fr); } }
+
+  /* ---------- Glass card + floating ---------- */
+  .card{
+    position:relative; border-radius:20px; padding:32px;
+    background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015));
+    border:1px solid var(--border);
+    box-shadow: 0 4px 24px rgba(11,9,17,.4), inset 0 1px 0 rgba(179,221,230,.06), inset 0 -1px 0 rgba(11,9,17,.3);
+    transition: transform .4s, border-color .4s, box-shadow .4s;
+  }
+  .card:hover{ border-color: rgba(0,212,255,.3); box-shadow: 0 8px 40px rgba(0,212,255,.1); }
+  .float{ animation: floaty 6s ease-in-out infinite; }
+  @keyframes floaty{ 0%,100%{ transform: translateY(0px);} 50%{ transform: translateY(-10px);} }
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal{ opacity:0; transform: translateY(36px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+  .reveal.visible{ opacity:1; transform: translateY(0); }
+  .reveal-scale{ opacity:0; transform: scale(.92) translateY(20px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal-scale.visible{ opacity:1; transform: scale(1) translateY(0); }
+
+  /* ---------- Outlined glow hero name (static, no flicker) ---------- */
+  .neon-name{
+    color: rgba(137,224,255,.12);
+    -webkit-text-stroke: 1.5px rgba(137,224,255,.9);
+    text-stroke: 1.5px rgba(137,224,255,.9);
+    filter:
+      drop-shadow(0 0 6px rgba(0,212,255,.55))
+      drop-shadow(0 0 18px rgba(0,212,255,.4))
+      drop-shadow(0 0 36px rgba(0,212,255,.28));
+  }
+
+  /* ---------- Letter-by-letter reveal (bottom to top) ---------- */
+  .letters-wrap{ display:inline-block; }
+  .letter{
+    display:inline-block;
+    opacity:0;
+    transform: translateY(60%);
+    filter: blur(4px);
+    transition: opacity .55s cubic-bezier(.2,.8,.2,1), transform .55s cubic-bezier(.2,.8,.2,1), filter .55s ease;
+    will-change: transform, opacity;
+  }
+  .letter.visible{ opacity:1; transform: translateY(0); filter: blur(0); }
+
+  /* ---------- Whole-word reveal (bottom to top, single block) ---------- */
+  .word-reveal{
+    display:inline-block;
+    opacity:0;
+    transform: translateY(50%);
+    filter: blur(6px);
+    transition: opacity .75s cubic-bezier(.2,.8,.2,1), transform .75s cubic-bezier(.2,.8,.2,1), filter .75s ease;
+  }
+  .word-reveal.visible{ opacity:1; transform: translateY(0); filter: blur(0); }
+
+  /* ---------- Staggered left-to-right children entrance ---------- */
+  .stagger-item{
+    opacity:0;
+    transform: translateX(-32px);
+    transition: opacity .6s cubic-bezier(.2,.8,.2,1), transform .6s cubic-bezier(.2,.8,.2,1);
+  }
+  .stagger-item.visible{ opacity:1; transform: translateX(0); }
+
+  .stagger-rotate{
+    opacity:0;
+    transform: rotate(-35deg) scale(.82);
+    transition: opacity .5s ease, transform .5s cubic-bezier(.25,.75,.35,1);
+  }
+  .stagger-rotate.visible{ opacity:1; transform: rotate(0deg) scale(1); }
+
+  /* ---------- New: tumble drop-in entrance (tech badges) ---------- */
+  .badge-flip-group{ perspective: 900px; }
+  @keyframes badgeTumbleIn{
+    0%{ opacity:0; transform: translateY(-60px) rotate(0deg) scale(.3); }
+    40%{ opacity:1; transform: translateY(10px) rotate(300deg) scale(1.1); }
+    65%{ transform: translateY(-6px) rotate(345deg) scale(.92); }
+    85%{ transform: translateY(2px) rotate(355deg) scale(1.03); }
+    100%{ opacity:1; transform: translateY(0) rotate(360deg) scale(1); }
+  }
+  .badge-flip{
+    opacity:0;
+    animation: badgeTumbleIn .9s cubic-bezier(.2,.8,.2,1) forwards;
+    animation-play-state: paused;
+  }
+  .badge-flip.visible{ animation-play-state: running; }
+
+  /* ---------- Animated background geometric shapes ---------- */
+  #bg-shapes{ position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; overflow:hidden; }
+  .bg-shape{
+    position:absolute;
+    border: 1.5px solid rgba(0,212,255,.16);
+    opacity:.55;
+    animation-name: shapeDrift, shapeSpin;
+    animation-timing-function: ease-in-out, linear;
+    animation-iteration-count: infinite, infinite;
+  }
+  .bg-shape.hexagon{ clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); }
+  .bg-shape.triangle{ clip-path: polygon(50% 0%, 100% 100%, 0% 100%); }
+  .bg-shape.square{ border-radius:4px; }
+  .bg-shape.diamond{ clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+  @keyframes shapeDrift{
+    0%{ transform: translate(0,0); }
+    25%{ transform: translate(24px,-30px); }
+    50%{ transform: translate(-18px,18px); }
+    75%{ transform: translate(20px,26px); }
+    100%{ transform: translate(0,0); }
+  }
+  @keyframes shapeSpin{
+    from{ transform: rotate(0deg); }
+    to{ transform: rotate(360deg); }
+  }
+
+  /* ---------- Grids ---------- */
+  .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+  .grid-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .grid-4{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+  .grid-5{ display:grid; grid-template-columns:repeat(5,1fr); gap:16px; }
+  @media (max-width: 900px){ .grid-2,.grid-3{ grid-template-columns:1fr; } .grid-4{ grid-template-columns:repeat(2,1fr);} .grid-5{ grid-template-columns:repeat(2,1fr);} }
+
+  h3{ margin:0 0 16px; font-size:19px; font-weight:600; display:flex; align-items:center; gap:8px; }
+  .muted{ color:var(--muted); line-height:1.7; }
+  .pill-tag{ display:inline-flex; padding:5px 12px; border-radius:999px; font-size:12px; border:1px solid rgba(0,212,255,.2); background: rgba(0,212,255,.05); margin:4px 4px 0 0; }
+  .icon-inline{ display:inline-flex; }
+  svg{ display:block; }
+
+  .mini-grid div.mini{ font-size:13px; color:var(--muted); background: rgba(255,255,255,.03); border:1px solid var(--border); border-radius:10px; padding:9px 12px; }
+
+  /* progress bars */
+  .bar-row{ margin-bottom:22px; }
+  .bar-row:last-child{ margin-bottom:0; }
+  .bar-top{ display:flex; justify-content:space-between; font-size:14px; margin-bottom:8px; }
+  .bar-track{ height:10px; border-radius:99px; background: rgba(255,255,255,.06); overflow:hidden; }
+  .bar-fill{ height:100%; border-radius:99px; width:0%; background: linear-gradient(90deg, rgba(0,212,255,.6), var(--primary-solid));
+    box-shadow: 0 0 12px rgba(0,212,255,.4); transition: width 1.4s cubic-bezier(.2,.8,.2,1); }
+
+  /* tech badges */
+  .badge-tech{ display:inline-flex; align-items:center; gap:8px; padding:9px 18px; border-radius:999px; font-size:14px;
+    border:1px solid rgba(0,212,255,.2); background: rgba(0,212,255,.05); margin:6px; transition: border-color .3s, box-shadow .3s; }
+  .badge-tech:hover{ border-color: rgba(0,212,255,.5); box-shadow: 0 0 20px rgba(0,212,255,.2); transform: translateY(-2px); transition: border-color .3s, box-shadow .3s, transform .3s; }
+  .dotc{ width:8px; height:8px; border-radius:50%; display:inline-block; }
+
+  /* timeline */
+  .tl-item{ position:relative; padding-left:40px; padding-bottom:32px; opacity:0; transform: translateY(-16px);
+    transition: opacity .6s ease, transform .6s ease; }
+  .tl-item.visible{ opacity:1; transform: translateY(0); }
+  .tl-item:last-child{ padding-bottom:0; }
+  .tl-item::before{ content:''; position:absolute; left:11px; top:12px; bottom:0; width:2px;
+    background: linear-gradient(180deg, rgba(0,212,255,.4), rgba(0,212,255,.05));
+    transform: scaleY(0); transform-origin: top; transition: transform .7s ease .2s; }
+  .tl-item.visible::before{ transform: scaleY(1); }
+  .tl-item:last-child::before{ display:none; }
+  .tl-dot{ position:absolute; left:0; top:0; width:24px; height:24px; border-radius:50%; background: var(--bg);
+    border:2px solid var(--primary-solid); display:flex; align-items:center; justify-content:center; color:var(--primary-solid); }
+  .tl-year{ font-size:12px; color: var(--primary-solid); font-family: monospace; margin-bottom:2px; }
+
+  blockquote{ font-size: clamp(22px,3vw,30px); font-weight:700; margin:0 0 12px; }
+
+  footer{ text-align:center; padding:48px 24px; border-top:1px solid var(--border); position:relative; z-index:2; color:var(--muted); font-size:14px; }
+  footer .socials{ display:flex; justify-content:center; gap:14px; margin-bottom:16px; }
+  footer .social{ width:38px; height:38px; border-radius:50%; background: rgba(255,255,255,.03); border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center; transition: color .2s, border-color .2s; }
+  footer .social:hover{ color: var(--primary-solid); border-color: rgba(0,212,255,.3); }
+  .contact-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;}
+  .contact-btn .contact-icon{flex:none;display:block;}
+  .contact-btn:hover .contact-icon{transform:scale(1.04);}
+  .social .footer-icon{display:block;}
+
+
+  /* ---------- Loader ---------- */
+  #loader{
+    position:fixed; inset:0; z-index:100000;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    background: radial-gradient(1000px 600px at 50% 30%, rgba(0,212,255,.08), transparent 60%), var(--bg);
+    transition: opacity .7s ease, visibility .7s ease;
+    overflow:hidden;
+  }
+  #loader.loader-hide{ opacity:0; visibility:hidden; pointer-events:none; }
+  #loader::before{
+    content:''; position:absolute; inset:0;
+    background-image: linear-gradient(rgba(0,212,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,.05) 1px, transparent 1px);
+    background-size: 42px 42px; mask-image: radial-gradient(600px 400px at 50% 50%, #000, transparent 75%);
+    animation: gridDrift 12s linear infinite;
+  }
+  @keyframes gridDrift{ 0%{ background-position:0 0;} 100%{ background-position:42px 42px;} }
+  .loader-scan{ position:absolute; left:0; right:0; height:2px; background: linear-gradient(90deg, transparent, rgba(0,212,255,.9), transparent);
+    box-shadow: 0 0 16px rgba(0,212,255,.8); animation: scanMove 2.6s ease-in-out infinite; }
+  @keyframes scanMove{ 0%{ top:10%; opacity:0;} 10%{opacity:1;} 50%{ top:90%; opacity:1;} 60%{opacity:0;} 100%{ top:10%; opacity:0;} }
+  .loader-inner{ position:relative; display:flex; flex-direction:column; align-items:center; gap:22px; }
+  .loader-ring{ position:relative; width:132px; height:132px; display:flex; align-items:center; justify-content:center; }
+  .loader-ring-svg{ position:absolute; inset:0; width:100%; height:100%; transform:rotate(-90deg); }
+  .ring-bg{ fill:none; stroke:rgba(0,212,255,.12); stroke-width:2.5; }
+  .ring-fg{ fill:none; stroke:var(--primary-solid); stroke-width:2.5; stroke-linecap:round;
+    stroke-dasharray:326.7; stroke-dashoffset:326.7; filter: drop-shadow(0 0 6px rgba(0,212,255,.8));
+    transition: stroke-dashoffset .25s ease; }
+  .loader-ring-outer{ position:absolute; inset:-14px; border-radius:50%; border:1px dashed rgba(0,212,255,.25);
+    animation: spinSlow 7s linear infinite; }
+  @keyframes spinSlow{ to{ transform: rotate(360deg); } }
+  .loader-logo{ font-size:22px; font-weight:700; letter-spacing:1px; color:var(--primary-solid);
+    text-shadow:0 0 18px rgba(0,212,255,.7); animation: logoPulse 1.8s ease-in-out infinite; }
+  @keyframes logoPulse{ 0%,100%{ opacity:.75; transform:scale(1);} 50%{ opacity:1; transform:scale(1.08);} }
+  .loader-name{ font-size:15px; letter-spacing:4px; text-transform:uppercase; color:var(--fg); display:flex; gap:8px; }
+  .loader-name span{ color:var(--muted); }
+  .loader-percent{ font-size:13px; color:var(--primary-solid); letter-spacing:2px; font-variant-numeric:tabular-nums; }
+  .loader-bar{ width:220px; height:3px; border-radius:3px; background:rgba(255,255,255,.06); overflow:hidden; }
+  .loader-bar-fill{ height:100%; width:0%; background:linear-gradient(90deg, rgba(0,212,255,.4), var(--primary-solid));
+    box-shadow:0 0 10px rgba(0,212,255,.8); transition:width .25s ease; }
+  .loader-status{ font-size:11px; color:var(--muted); letter-spacing:1px; min-height:14px; }
+  @media (max-width:520px){
+    .loader-ring{ width:104px; height:104px; }
+    .loader-name{ font-size:12px; letter-spacing:3px; }
+  }
+
+  /* ---------- Loader completion sequence ---------- */
+  .loader-inner{ transition: transform .6s cubic-bezier(.6,0,.2,1), opacity .5s ease; }
+  #loader.loader-converge .loader-inner{ transform: scale(0.18); opacity:0; }
+  #loader.loader-converge .loader-scan{ opacity:0; transition:opacity .2s ease; }
+  #loader.loader-converge::before{ opacity:0; transition:opacity .3s ease; }
+
+  #loader-flash{
+    position:fixed; inset:0; z-index:100001;
+    background: radial-gradient(circle at 50% 50%, #eaffff 0%, var(--primary-solid) 28%, rgba(0,212,255,.6) 55%, transparent 78%);
+    opacity:0; pointer-events:none;
+  }
+  #loader-flash.flash-fire{ animation: flashFire .7s ease-out forwards; }
+  @keyframes flashFire{
+    0%{ opacity:0; transform:scale(.05); }
+    35%{ opacity:1; transform:scale(1.1); }
+    100%{ opacity:0; transform:scale(2.6); }
+  }
+
+  #site{ opacity:0; transform:translateY(28px) scale(.98); filter: blur(6px); }
+  #site.site-reveal{
+    opacity:1; transform:translateY(0) scale(1); filter:blur(0);
+    transition: opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1), filter .8s ease;
+  }
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="loader-scan"></div>
+  <div class="loader-inner">
+    <div class="loader-ring">
+      <div class="loader-ring-outer"></div>
+      <svg class="loader-ring-svg" viewBox="0 0 120 120">
+        <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
+        <circle class="ring-fg" cx="60" cy="60" r="52"></circle>
+      </svg>
+      <div class="loader-logo">AE</div>
+    </div>
+    <div class="loader-name">Amirhossein<span>Ebrahimi</span></div>
+    <div class="loader-bar"><div class="loader-bar-fill" id="loader-bar-fill"></div></div>
+    <div class="loader-percent" id="loader-percent">0%</div>
+    <div class="loader-status" id="loader-status">initializing…</div>
+  </div>
+</div>
+
+<div id="loader-flash"></div>
+
+<canvas id="bg-canvas"></canvas>
+<div id="bg-shapes"></div>
+<div id="cursor-ring"></div>
+<div id="cursor-dot"></div>
+
+<div id="site">
+
+<nav id="nav">
+  <div class="nav-inner">
+    <div class="brand"><span class="logo">AE</span><span>Amirhossein</span></div>
+    <div class="nav-links">
+      <a href="#about">About</a><a href="#tech">Tech</a><a href="#focus">Focus</a><a href="#timeline">Timeline</a><a href="#contact">Contact</a>
+    </div>
+    <div class="nav-icons">
+      <a class="icon-btn" href="https://github.com/amirhossein-JN" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+      </a>
+      <a class="icon-btn" href="https://t.me/Voxmanl" target="_blank" rel="noopener" aria-label="Telegram">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path><path d="m21.854 2.147-10.94 10.939"></path></svg>
+      </a>
+      <a class="icon-btn" href="mailto:amir.hossein.ebrahimi.jz@gmail.com" aria-label="Email">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path><rect x="2" y="4" width="20" height="16" rx="2"></rect></svg>
+      </a>
+      <button class="icon-btn nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-mobile-links" id="nav-mobile-links">
+    <a href="#about">About</a><a href="#tech">Tech</a><a href="#focus">Focus</a><a href="#timeline">Timeline</a><a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<section class="hero wrap">
+  <div>
+    <div class="badge-pill reveal"><span class="dot"></span>Open to opportunities</div>
+    <h1 class="reveal"><span class="neon-name split-letters">Amirhossein</span><br><span class="split-letters">Ebrahimi</span></h1>
+    <div class="tag reveal"><span class="gradient-text">Developer</span> <span class="blink">|</span></div>
+    <p class="desc reveal">Student of Computer Networks &amp; Software Engineering at <b>Allameh Helli 7 (SAMPAD)</b>. Passionate about building modern applications and solving real-world problems.</p>
+    <div class="btn-row reveal">
+      <a class="btn btn-primary" href="#about">🚀 Explore My Work</a>
+      <a class="btn btn-outline" href="https://github.com/amirhossein-JN" target="_blank" rel="noopener">GitHub Profile</a>
+    </div>
+    <div class="stat-grid reveal">
+      <div><div class="stat-num" data-count="10" data-suffix="+">0</div><div class="stat-label">Projects Built</div></div>
+      <div><div class="stat-num" data-count="3" data-suffix="">0</div><div class="stat-label">Years Learning</div></div>
+      <div><div class="stat-num" data-count="100" data-suffix="%">0</div><div class="stat-label">Passion</div></div>
+      <div><div class="stat-num" data-static="24/7">24/7</div><div class="stat-label">Coding</div></div>
+    </div>
+    <div class="scroll-cue">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto;"><path d="m6 9 6 6 6-6"></path></svg>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="section wrap">
+  <div class="section-head reveal">
+    <div class="icon-badge">🎓</div>
+    <h2 class="split-letters">About Me</h2>
+    <p>A passionate developer on a journey to build impactful software.</p>
+    <div class="divider"></div>
+  </div>
+  <div class="grid-2">
+    <div class="card reveal float">
+      <h3>❤️ Who I Am</h3>
+      <p class="muted">Hello! I'm <b style="color:#fff;">Amirhossein</b>. A student of Computer Networks &amp; Software Engineering at <span style="color:rgba(0,212,255,.8)">Allameh Helli 7 (SAMPAD)</span>.</p>
+      <p class="muted">I'm passionate about building modern applications and solving real-world problems through code. My interests span across the entire software engineering spectrum.</p>
+      <p class="muted">I'm currently focused on mastering React, Advanced JavaScript, Python, Data Structures &amp; Algorithms, and Clean Architecture.</p>
+      <div style="margin-top:18px;">
+        <span class="pill-tag">Artificial Intelligence</span><span class="pill-tag">Robotics</span><span class="pill-tag">Software Engineering</span><span class="pill-tag">Frontend Development</span><span class="pill-tag">Open Source</span>
+      </div>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:22px;">
+      <div class="card reveal float" style="animation-delay:.4s;">
+        <h3 style="justify-content:center;">Profile Summary</h3>
+        <div class="mini-grid stagger" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="mini">🎓 Computer Networks Student</div>
+          <div class="mini">💻 Frontend Developer</div>
+          <div class="mini">🐍 Python Programmer</div>
+          <div class="mini">💙 React Enthusiast</div>
+          <div class="mini">⚡ C++ Developer</div>
+          <div class="mini">🤖 AI &amp; Robotics</div>
+          <div class="mini">📚 Lifelong Learner</div>
+          <div class="mini">🌍 Open Source Contributor</div>
+        </div>
+      </div>
+      <div class="card reveal float" style="animation-delay:.8s; text-align:center;">
+        <h3 style="justify-content:center;">❝ Motto</h3>
+        <p style="font-style:italic; color:rgba(0,212,255,.9); font-weight:500; font-size:17px;">"Stay Curious. Keep Building. Never Stop Learning."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section wrap">
+  <div class="section-head reveal">
+    <div class="icon-badge">🗂️</div>
+    <h2 class="split-letters">Featured Repositories</h2>
+    <p>Explore my open-source projects across different technologies.</p>
+    <div class="divider"></div>
+  </div>
+  <div class="grid-3">
+    <a href="https://github.com/amirhossein-JN/web-projects" target="_blank" rel="noopener" class="card reveal float">
+      <div style="width:48px;height:48px;border-radius:12px;background:rgba(97,218,251,.08);border:1px solid rgba(97,218,251,.2);display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:#61dafb;">🌐</div>
+      <h3>Web Projects</h3>
+      <p class="muted">Frontend development projects using HTML, CSS, JavaScript and React.</p>
+      <div style="margin-top:16px;font-size:13px;color:var(--primary-solid);">View Repository →</div>
+    </a>
+    <a href="https://github.com/amirhossein-JN/python-projects" target="_blank" rel="noopener" class="card reveal float" style="animation-delay:.3s;">
+      <div style="width:48px;height:48px;border-radius:12px;background:rgba(55,118,171,.08);border:1px solid rgba(55,118,171,.2);display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:#3776a9;">🐍</div>
+      <h3>Python Projects</h3>
+      <p class="muted">Python scripts, applications and AI experiments.</p>
+      <div style="margin-top:16px;font-size:13px;color:var(--primary-solid);">View Repository →</div>
+    </a>
+    <a href="https://github.com/amirhossein-JN/cpp-projects" target="_blank" rel="noopener" class="card reveal float" style="animation-delay:.6s;">
+      <div style="width:48px;height:48px;border-radius:12px;background:rgba(0,89,156,.08);border:1px solid rgba(0,89,156,.2);display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:#00599c;">🖥️</div>
+      <h3>C++ Projects</h3>
+      <p class="muted">Algorithms, data structures and software engineering projects.</p>
+      <div style="margin-top:16px;font-size:13px;color:var(--primary-solid);">View Repository →</div>
+    </a>
+  </div>
+</section>
+
+<section id="tech" class="section wrap">
+  <div class="section-head reveal">
+    <div class="icon-badge">&lt;/&gt;</div>
+    <h2 class="split-letters">Tech Stack</h2>
+    <p>Technologies I work with on a daily basis.</p>
+    <div class="divider"></div>
+  </div>
+  <div class="card reveal float" style="max-width:760px;margin:0 auto;text-align:center;">
+    <div id="tech-badges" class="badge-flip-group">
+      <span class="badge-tech"><span class="dotc" style="background:#e34f26;"></span>HTML5</span>
+      <span class="badge-tech"><span class="dotc" style="background:#1572b6;"></span>CSS</span>
+      <span class="badge-tech"><span class="dotc" style="background:#f7df1e;"></span>JavaScript</span>
+      <span class="badge-tech"><span class="dotc" style="background:#61dafb;"></span>React</span>
+      <span class="badge-tech"><span class="dotc" style="background:#3776a9;"></span>Python</span>
+      <span class="badge-tech"><span class="dotc" style="background:#00599c;"></span>C++</span>
+      <span class="badge-tech"><span class="dotc" style="background:#f05032;"></span>Git</span>
+      <span class="badge-tech"><span class="dotc" style="background:#ffffff;"></span>GitHub</span>
+      <span class="badge-tech"><span class="dotc" style="background:#fcc624;"></span>Linux</span>
+      <span class="badge-tech"><span class="dotc" style="background:#007acc;"></span>VS Code</span>
+    </div>
+  </div>
+</section>
+
+<section id="focus" class="section wrap">
+  <div class="section-head reveal">
+    <div class="icon-badge">🎯</div>
+    <h2 class="split-letters">Current Focus</h2>
+    <p>Where my energy is going right now.</p>
+    <div class="divider"></div>
+  </div>
+  <div class="card reveal float" style="max-width:640px;margin:0 auto;">
+    <div class="bar-row"><div class="bar-top"><span>🗂️ Frontend Development</span><span>85%</span></div><div class="bar-track"><div class="bar-fill" data-w="85"></div></div></div>
+    <div class="bar-row"><div class="bar-top"><span>🐍 Python</span><span>80%</span></div><div class="bar-track"><div class="bar-fill" data-w="80"></div></div></div>
+    <div class="bar-row"><div class="bar-top"><span>⚛️ React</span><span>75%</span></div><div class="bar-track"><div class="bar-fill" data-w="75"></div></div></div>
+    <div class="bar-row"><div class="bar-top"><span>🧠 Artificial Intelligence</span><span>65%</span></div><div class="bar-track"><div class="bar-fill" data-w="65"></div></div></div>
+    <div class="bar-row"><div class="bar-top"><span>🎯 Problem Solving</span><span>70%</span></div><div class="bar-track"><div class="bar-fill" data-w="70"></div></div></div>
+  </div>
+</section>
+
+<section class="section wrap">
+  <div class="section-head reveal">
+    <div class="icon-badge">✨</div>
+    <h2 class="split-letters">Fun Facts</h2>
+    <p>A little more about me.</p>
+    <div class="divider"></div>
+  </div>
+  <div class="grid-3 stagger-rotate-group">
+    <div class="card float"><div style="font-size:22px;margin-bottom:10px;">☕</div><p class="muted" style="margin:0;">Coffee makes debugging easier.</p></div>
+    <div class="card float"><div style="font-size:22px;margin-bottom:10px;">🚀</div><p class="muted" style="margin:0;">I love building useful projects.</p></div>
+    <div class="card float"><div style="font-size:22px;margin-bottom:10px;">🧠</div><p class="muted" style="margin:0;">AI fascinates me.</p></div>
+    <div class="card float"><div style="font-size:22px;margin-bottom:10px;">🌍</div><p class="muted" style="margin:0;">I enjoy learning new technologies.</p></div>
+    <div class="card float"><div style="font-size:22px;margin-bottom:10px;">&lt;/&gt;</div><p class="muted" style="margin:0;">Clean code is my favorite style.</p></div>
+  </div>
+</section>
+
+<section id="timeline" class="section wrap">
+  <div class="section-head reveal">
+    <div class="icon-badge">🚀</div>
+    <h2 class="split-letters">My Journey</h2>
+    <p>Learning and growing every step of the way.</p>
+    <div class="divider"></div>
+  </div>
+  <div class="card reveal float" style="max-width:480px;margin:0 auto;">
+    <div class="tl-item"><div class="tl-dot">✨</div><div class="tl-year">2023</div><div>Started Programming</div></div>
+    <div class="tl-item"><div class="tl-dot">&lt;&gt;</div><div class="tl-year">2024</div><div>HTML • CSS • Python</div></div>
+    <div class="tl-item"><div class="tl-dot">🚀</div><div class="tl-year">2025</div><div>JavaScript • React • Git</div></div>
+    <div class="tl-item"><div class="tl-dot">🧠</div><div class="tl-year">2026</div><div>AI • Robotics • Open Source</div></div>
+  </div>
+</section>
+
+<section class="section wrap">
+  <div class="section-head reveal">
+    <div class="icon-badge">👥</div>
+    <h2 class="split-letters">Soft Skills</h2>
+    <p>Qualities that define my approach to work.</p>
+    <div class="divider"></div>
+  </div>
+  <div class="grid-4 stagger-rotate-group">
+    <div class="card float" style="text-align:center;padding:22px;"><div style="font-size:20px;margin-bottom:8px;">💡</div><p style="margin:0;font-weight:500;font-size:14px;">Problem Solving</p></div>
+    <div class="card float" style="text-align:center;padding:22px;"><div style="font-size:20px;margin-bottom:8px;">👥</div><p style="margin:0;font-weight:500;font-size:14px;">Team Work</p></div>
+    <div class="card float" style="text-align:center;padding:22px;"><div style="font-size:20px;margin-bottom:8px;">⚡</div><p style="margin:0;font-weight:500;font-size:14px;">Fast Learner</p></div>
+    <div class="card float" style="text-align:center;padding:22px;"><div style="font-size:20px;margin-bottom:8px;">📨</div><p style="margin:0;font-weight:500;font-size:14px;">Communication</p></div>
+    <div class="card float" style="text-align:center;padding:22px;"><div style="font-size:20px;margin-bottom:8px;">⏱️</div><p style="margin:0;font-weight:500;font-size:14px;">Time Management</p></div>
+    <div class="card float" style="text-align:center;padding:22px;"><div style="font-size:20px;margin-bottom:8px;">🧠</div><p style="margin:0;font-weight:500;font-size:14px;">Critical Thinking</p></div>
+    <div class="card float" style="text-align:center;padding:22px;"><div style="font-size:20px;margin-bottom:8px;">📖</div><p style="margin:0;font-weight:500;font-size:14px;">Self Learning</p></div>
+    <div class="card float" style="text-align:center;padding:22px;"><div style="font-size:20px;margin-bottom:8px;">✨</div><p style="margin:0;font-weight:500;font-size:14px;">Leadership</p></div>
+  </div>
+</section>
+
+<section class="section wrap">
+  <div class="section-head reveal">
+    <div class="icon-badge">⏱️</div>
+    <h2 class="split-letters">Daily Routine</h2>
+    <p>How I spend my typical day.</p>
+    <div class="divider"></div>
+  </div>
+  <div class="card reveal float" style="max-width:640px;margin:0 auto;">
+    <div class="bar-row"><div class="bar-top"><span>☕ Coffee</span><span>65%</span></div><div class="bar-track"><div class="bar-fill" data-w="65"></div></div></div>
+    <div class="bar-row"><div class="bar-top"><span>&lt;/&gt; Coding</span><span>90%</span></div><div class="bar-track"><div class="bar-fill" data-w="90"></div></div></div>
+    <div class="bar-row"><div class="bar-top"><span>📖 Learning</span><span>75%</span></div><div class="bar-track"><div class="bar-fill" data-w="75"></div></div></div>
+    <div class="bar-row"><div class="bar-top"><span>🎵 Music</span><span>50%</span></div><div class="bar-track"><div class="bar-fill" data-w="50"></div></div></div>
+    <div class="bar-row"><div class="bar-top"><span>❤️ Sleep</span><span>35%</span></div><div class="bar-track"><div class="bar-fill" data-w="35"></div></div></div>
+  </div>
+</section>
+
+<section class="section wrap">
+  <div class="section-head reveal">
+    <div class="icon-badge">📖</div>
+    <h2 class="split-letters">Currently Reading</h2>
+    <p>Books that are shaping my skills.</p>
+    <div class="divider"></div>
+  </div>
+  <div class="card reveal float" style="max-width:640px;margin:0 auto;">
+    <div class="grid-2 stagger">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);"><div style="width:40px;height:40px;border-radius:10px;background:rgba(0,212,255,.1);display:flex;align-items:center;justify-content:center;">📖</div><div><div style="font-weight:500;font-size:14px;">Clean Code</div><div class="muted" style="font-size:12px;">📖 Reading</div></div></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);"><div style="width:40px;height:40px;border-radius:10px;background:rgba(0,212,255,.1);display:flex;align-items:center;justify-content:center;">📖</div><div><div style="font-weight:500;font-size:14px;">Python Crash Course</div><div class="muted" style="font-size:12px;">📖 Reading</div></div></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);"><div style="width:40px;height:40px;border-radius:10px;background:rgba(0,212,255,.1);display:flex;align-items:center;justify-content:center;">📖</div><div><div style="font-weight:500;font-size:14px;">Eloquent JavaScript</div><div class="muted" style="font-size:12px;">📖 Reading</div></div></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);"><div style="width:40px;height:40px;border-radius:10px;background:rgba(0,212,255,.1);display:flex;align-items:center;justify-content:center;">📖</div><div><div style="font-weight:500;font-size:14px;">Hands-On Machine Learning</div><div class="muted" style="font-size:12px;">📖 Reading</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section wrap">
+  <div class="section-head reveal">
+    <div class="icon-badge">🎯</div>
+    <h2 class="split-letters">Goals 2026</h2>
+    <p>What I'm working towards this year.</p>
+    <div class="divider"></div>
+  </div>
+  <div class="card reveal float" style="max-width:900px;margin:0 auto;">
+    <div class="grid-5 stagger">
+      <div style="text-align:center;padding:16px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);"><div style="font-size:20px;margin-bottom:8px;">&lt;/&gt;</div><p style="margin:0;font-size:12px;">Build professional React projects</p></div>
+      <div style="text-align:center;padding:16px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);"><div style="font-size:20px;margin-bottom:8px;">🧠</div><p style="margin:0;font-size:12px;">Learn Machine Learning &amp; AI</p></div>
+      <div style="text-align:center;padding:16px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);"><div style="font-size:20px;margin-bottom:8px;">📖</div><p style="margin:0;font-size:12px;">Master Data Structures &amp; Algorithms</p></div>
+      <div style="text-align:center;padding:16px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);"><div style="font-size:20px;margin-bottom:8px;">🌍</div><p style="margin:0;font-size:12px;">Contribute to Open Source</p></div>
+      <div style="text-align:center;padding:16px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);"><div style="font-size:20px;margin-bottom:8px;">🚀</div><p style="margin:0;font-size:12px;">Become a Full-Stack Developer</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section wrap">
+  <div class="card reveal-scale" style="max-width:720px;margin:0 auto;text-align:center;padding:56px 40px;border-radius:26px;">
+    <div style="font-size:36px;color:rgba(0,212,255,.3);margin-bottom:20px;">❝</div>
+    <blockquote>"The best way to predict the future is to build it."</blockquote>
+    <p class="muted">— Amirhossein Ebrahimi</p>
+  </div>
+</section>
+
+<section id="contact" class="section wrap">
+  <div class="section-head reveal">
+    <div class="icon-badge">📨</div>
+    <h2 class="split-letters">Get In Touch</h2>
+    <p>Let's connect and build something amazing together.</p>
+    <div class="divider"></div>
+  </div>
+  <div class="card reveal float" style="max-width:640px;margin:0 auto;text-align:center;">
+    <div class="btn-row stagger">
+      <a class="btn btn-outline contact-btn" href="https://t.me/Voxmanl" target="_blank" rel="noopener" aria-label="Telegram">
+        <svg class="contact-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path>
+  <path d="m21.854 2.147-10.94 10.939"></path>
+</svg>
+        <span>Telegram</span>
+      </a>
+      <a class="btn btn-outline contact-btn" href="mailto:amir.hossein.ebrahimi.jz@gmail.com" aria-label="Email">
+        <svg class="contact-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path>
+  <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+</svg>
+        <span>Email</span>
+      </a>
+      <a class="btn btn-outline contact-btn" href="https://github.com/amirhossein-JN" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg class="contact-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
+  <path d="M9 18c-4.51 2-5-2-7-2"></path>
+</svg>
+        <span>GitHub</span>
+      </a>
+    </div>
+    <hr style="border:none;border-top:1px solid var(--border);margin:24px 0;">
+    <p class="muted" style="margin:0 0 8px;">If you enjoy my projects, consider giving them a ⭐</p>
+    <p class="muted" style="font-size:12px;opacity:.6;">Every star motivates me to build more useful and better software.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="socials">
+    <a class="social" href="https://github.com/amirhossein-JN" target="_blank" rel="noopener" aria-label="GitHub">
+      <svg class="footer-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
+  <path d="M9 18c-4.51 2-5-2-7-2"></path>
+</svg>
+    </a>
+
+    <a class="social" href="https://t.me/Voxmanl" target="_blank" rel="noopener" aria-label="Telegram">
+      <svg class="footer-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path>
+  <path d="m21.854 2.147-10.94 10.939"></path>
+</svg>
+    </a>
+
+    <a class="social" href="mailto:amir.hossein.ebrahimi.jz@gmail.com" aria-label="Email">
+      <svg class="footer-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path>
+  <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+</svg>
+    </a>
+  </div>
+  <p>Built with ❤️ by <span style="color:var(--primary-solid);font-weight:500;">Amirhossein Ebrahimi</span></p>
+  <p style="opacity:.5;font-size:12px;">© 2026 • All Rights Reserved</p>
+</footer>
+</div>
+
+<script>
+/* ================= Loader ================= */
+(function(){
+  const loader = document.getElementById('loader');
+  const flash = document.getElementById('loader-flash');
+  const site = document.getElementById('site');
+  const ring = document.querySelector('.ring-fg');
+  const fill = document.getElementById('loader-bar-fill');
+  const pct = document.getElementById('loader-percent');
+  const status = document.getElementById('loader-status');
+  const CIRC = 326.7;
+  const statuses = ['initializing…','loading assets…','compiling components…','rendering network…','almost there…'];
+  let progress = 0;
+  let pageLoaded = false;
+  let finishing = false;
+
+  function paint(){
+    ring.style.strokeDashoffset = CIRC - (CIRC * progress / 100);
+    fill.style.width = progress + '%';
+    pct.textContent = Math.floor(progress) + '%';
+    status.textContent = statuses[Math.min(statuses.length-1, Math.floor(progress/22))];
+  }
+
+  function finishSequence(){
+    finishing = true;
+    status.textContent = 'ready';
+    // 1) ring + card converge into the center point
+    loader.classList.add('loader-converge');
+    setTimeout(()=>{
+      // 2) flash of light
+      flash.classList.add('flash-fire');
+      loader.style.opacity = '0';
+      loader.style.visibility = 'hidden';
+      // 3) main page rises up
+      requestAnimationFrame(()=> requestAnimationFrame(()=> site.classList.add('site-reveal')));
+    }, 550);
+    setTimeout(()=>{ loader.remove(); flash.remove(); }, 1500);
+  }
+
+  function tick(){
+    if(!finishing && (progress < 90 || (pageLoaded && progress < 100))){
+      const target = pageLoaded ? 100 : 90;
+      progress += Math.max(0.4, (target - progress) * 0.06);
+      if(progress > target) progress = target;
+      paint();
+    }
+    if(!finishing && progress >= 100){
+      finishSequence();
+      return;
+    }
+    if(!finishing) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+  window.addEventListener('load', ()=>{ pageLoaded = true; });
+  setTimeout(()=>{ pageLoaded = true; }, 2200); // safety cap
+})();
+
+/* ================= Split text into animated letters ================= */
+function splitLetters(el){
+  const text = el.textContent;
+  el.textContent = '';
+  el.classList.add('letters-wrap');
+  [...text].forEach((ch, i)=>{
+    const span = document.createElement('span');
+    span.className = 'letter';
+    span.style.transitionDelay = (i * 0.035) + 's';
+    span.textContent = ch === ' ' ? '\u00A0' : ch;
+    el.appendChild(span);
+  });
+}
+document.querySelectorAll('.split-letters').forEach(splitLetters);
+
+/* ================= Animated background geometric shapes ================= */
+(function(){
+  const host = document.getElementById('bg-shapes');
+  const shapeTypes = ['hexagon','triangle','square','diamond'];
+  const COUNT = window.innerWidth < 700 ? 8 : 14;
+  for(let i=0;i<COUNT;i++){
+    const el = document.createElement('div');
+    const type = shapeTypes[i % shapeTypes.length];
+    const size = 30 + Math.random()*70;
+    el.className = 'bg-shape ' + type;
+    el.style.width = size + 'px';
+    el.style.height = size + 'px';
+    el.style.left = (Math.random()*100) + 'vw';
+    el.style.top = (Math.random()*100) + 'vh';
+    const driftDur = 10 + Math.random()*14;
+    const spinDur = 18 + Math.random()*30;
+    el.style.animationDuration = driftDur + 's, ' + spinDur + 's';
+    el.style.animationDelay = (Math.random()*-20) + 's, ' + (Math.random()*-20) + 's';
+    host.appendChild(el);
+  }
+})();
+
+/* ================= Custom cursor ================= */
+const dot = document.getElementById('cursor-dot');
+const ring = document.getElementById('cursor-ring');
+let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
+let ringX = mouseX, ringY = mouseY;
+
+window.addEventListener('mousemove', (e)=>{
+  mouseX = e.clientX; mouseY = e.clientY;
+  dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%,-50%)`;
+});
+
+function animateRing(){
+  ringX += (mouseX - ringX) * 0.18;
+  ringY += (mouseY - ringY) * 0.18;
+  ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%,-50%)`;
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+document.querySelectorAll('a, button, .btn, .card, .badge-tech').forEach(el=>{
+  el.addEventListener('mouseenter', ()=> document.body.classList.add('cursor-hover'));
+  el.addEventListener('mouseleave', ()=> document.body.classList.remove('cursor-hover'));
+});
+
+/* ================= Animated particle-network background ================= */
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+const NUM = Math.min(90, Math.floor(window.innerWidth/16));
+
+function resize(){
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+function initParticles(){
+  particles = [];
+  for(let i=0;i<NUM;i++){
+    particles.push({
+      x: Math.random()*W,
+      y: Math.random()*H,
+      vx: (Math.random()-0.5)*0.35,
+      vy: (Math.random()-0.5)*0.35,
+      r: Math.random()*1.6 + 0.6
+    });
+  }
+}
+initParticles();
+
+function tick(){
+  ctx.clearRect(0,0,W,H);
+  for(const p of particles){
+    p.x += p.vx; p.y += p.vy;
+    if(p.x < 0 || p.x > W) p.vx *= -1;
+    if(p.y < 0 || p.y > H) p.vy *= -1;
+  }
+  for(let i=0;i<particles.length;i++){
+    for(let j=i+1;j<particles.length;j++){
+      const a = particles[i], b = particles[j];
+      const dx = a.x-b.x, dy = a.y-b.y;
+      const d = Math.sqrt(dx*dx+dy*dy);
+      if(d < 130){
+        ctx.strokeStyle = `rgba(0,212,255,${(1 - d/130)*0.15})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+      }
+    }
+  }
+  for(const p of particles){
+    ctx.beginPath();
+    ctx.fillStyle = 'rgba(0,212,255,0.55)';
+    ctx.shadowColor = 'rgba(0,212,255,0.6)';
+    ctx.shadowBlur = 4;
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fill();
+  }
+  requestAnimationFrame(tick);
+}
+tick();
+
+/* ================= Nav scroll style ================= */
+const navEl = document.getElementById('nav');
+window.addEventListener('scroll', ()=>{
+  navEl.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+/* ================= Mobile nav toggle ================= */
+const navToggle = document.getElementById('nav-toggle');
+const navMobileLinks = document.getElementById('nav-mobile-links');
+if(navToggle){
+  navToggle.addEventListener('click', ()=>{
+    const isOpen = navEl.classList.toggle('nav-open');
+    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  navMobileLinks.querySelectorAll('a').forEach(a=>{
+    a.addEventListener('click', ()=>{
+      navEl.classList.remove('nav-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+  window.addEventListener('resize', ()=>{
+    if(window.innerWidth > 780){
+      navEl.classList.remove('nav-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
+
+/* ================= Scroll reveal + progress bars + counters ================= */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('visible');
+
+      // animate any progress bars inside
+      entry.target.querySelectorAll('.bar-fill').forEach(bar=>{
+        const w = bar.getAttribute('data-w');
+        requestAnimationFrame(()=> bar.style.width = w + '%');
+      });
+
+      // animate counters
+      entry.target.querySelectorAll('[data-count]').forEach(el=>{
+        if(el.dataset.done) return;
+        el.dataset.done = '1';
+        const target = parseInt(el.getAttribute('data-count'),10);
+        const suffix = el.getAttribute('data-suffix') || '';
+        let cur = 0;
+        const step = Math.max(1, Math.round(target/40));
+        const t = setInterval(()=>{
+          cur += step;
+          if(cur >= target){ cur = target; clearInterval(t); }
+          el.textContent = cur + suffix;
+        }, 30);
+      });
+
+      // reveal letters (bottom to top, in order) inside this element
+      entry.target.querySelectorAll('.letter').forEach(l=> l.classList.add('visible'));
+      // reveal whole-word blocks (e.g. hero name) inside this element
+      entry.target.querySelectorAll('.word-reveal').forEach(w=> w.classList.add('visible'));
+
+      // reveal timeline items one by one, top to bottom, with the connecting line filling as it goes
+      const tlItems = entry.target.querySelectorAll('.tl-item');
+      tlItems.forEach((item, i)=>{
+        setTimeout(()=> item.classList.add('visible'), i * 450);
+      });
+
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.reveal, .reveal-scale').forEach(el=> io.observe(el));
+
+/* ================= Staggered left-to-right entrance (grids, badge rows) ================= */
+/* Phase 1: hide children immediately so they're ready to animate in */
+document.querySelectorAll('.stagger, .stagger-rotate-group, .badge-flip-group').forEach(container=>{
+  let variant = 'stagger-item';
+  if(container.classList.contains('stagger-rotate-group')) variant = 'stagger-rotate';
+  if(container.classList.contains('badge-flip-group')) variant = 'badge-flip';
+  [...container.children].forEach((child, i)=>{
+    child.classList.add(variant);
+    child.style.transitionDelay = (i * 0.09) + 's';
+    child.style.animationDelay = (i * 0.09) + 's';
+  });
+});
+
+/* Phase 2: reveal children left-to-right once the container enters the viewport */
+const staggerIo = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const container = entry.target;
+      [...container.children].forEach(child=> child.classList.add('visible'));
+      staggerIo.unobserve(container);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.stagger, .stagger-rotate-group, .badge-flip-group').forEach(el=> staggerIo.observe(el));
+</script>
+</body>
+</html>
